@@ -33,9 +33,11 @@ void TrkAnaTutorialPlotTrkMomentum()
 
   TH1D* hist2 = new TH1D("hist2","",100,100,110);
   trkana->Draw("demfit.mom.R()>>hist2", "demfit.sid==0", "HIST SAME"); //again utilizing R() function. now tracking only at one intersection by establishing a cut using the center argument; sid = surface id, sid=0 denotes the entrance to the tracker
+  hist2->SetLineColor(kRed);
 
   TH1D* hist3= new TH1D("hist3","",100,100,110);
   trkana->Draw("demfit.mom.R()>>hist3","demfit.sid==0 && demlh.t0>=700", "HIST SAME"); //utilizing R() to make cuts at the entrance of the tracker and also at the time greater than 700 (ms?)
+  hist3->SetLineColor(kGreen);
 
   c1->Update();
   cout << "Saving canvas as trkMomentum.pdf" << endl;
