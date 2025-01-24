@@ -1,6 +1,7 @@
 #include <TChain.h>
 #include <TCanvas.h>
 #include <TH1D.h>
+#include <TLegend.h>
 #include <Math/Vector3D.h>
 #include <string>
 #include <fstream>
