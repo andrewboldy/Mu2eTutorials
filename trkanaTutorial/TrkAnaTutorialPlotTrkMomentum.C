@@ -39,6 +39,12 @@ void TrkAnaTutorialPlotTrkMomentum()
   trkana->Draw("demfit.mom.R()>>hist3","demfit.sid==0 && demlh.t0>=700", "HIST SAME"); //utilizing R() to make cuts at the entrance of the tracker and also at the time greater than 700 (ms?)
   hist3->SetLineColor(kGreen);
 
+  TLegend* leg = new TLegend();
+  leg->AddEntry(hist, "momentum  magnitude", "l");
+  leg->AddEntry(hist2, "momentum magnitude at entrance", "l");
+  leg->AddEntry(hist3, "momentum magnitude at entrance with t>700 (ms?)","l");
+  leg->Draw();
+
   c1->Update();
   cout << "Saving canvas as trkMomentum.pdf" << endl;
   c1->SaveAs("trkMomentum.pdf");
