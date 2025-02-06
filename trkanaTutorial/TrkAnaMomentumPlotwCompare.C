@@ -1,4 +1,3 @@
-
 //all of my inclusions
 #include <TChain.h>
 #include <TCanvas.h>
@@ -16,13 +15,13 @@ bool DO_POSITRON_ORIGIN_MOMENTUM = false;
 
 using namespace std;
 
-void TrkAnaTutorialPlotTrkMomentum()
+void TrkAnaMomentumPlotwCompare()
 {
   if (DO_ELECTRON_MOMENTUM==true)
   {
     TChain* trkana = new TChain("TrkAna/trkana");
 
-    ifstream input_filelist("filelists/nts.mu2e.CeEndpointMix1BBSignal.Tutorial_2024_03.list");
+    ifstream input_filelist("filelists/nts.mu2e.CeEndpointMix1BB.MDC2020s_perfect_v1_0_td_v01_01_00.list");
     if (input_filelist.is_open())
     {
       string filename;
@@ -33,7 +32,6 @@ void TrkAnaTutorialPlotTrkMomentum()
       input_filelist.close();
     }
 
-    cout << "Number of entries: " << trkana->GetEntries() << endl;
     TCanvas* c1 = new TCanvas("c1","c1");
     c1->SetGridx(true);
     c1->SetGridy(true);
@@ -111,11 +109,11 @@ void TrkAnaTutorialPlotTrkMomentum()
     delete hist3;
   }
 
-  if (DO_ELECTRON_ORIGIN_MOMENTUM_COMP)
+  if (DO_ELECTRON_ORIGIN_MOMENTUM_COMP==true)
   {
-    TChain* trkana = new TChain("TrkAna/trkana");
+    TChain* trkana = new TChain("EventNtuple/ntuple"); //building a TChain from the directories TrkAnaNeg/trkana for a given file in the filelist
 
-    ifstream input_filelist("filelists/nts.mu2e.CeEndpointMix1BBSignal.Tutorial_2024_03.list");
+    ifstream input_filelist("filelists/nts.mu2e.CeEndpointMix1BBTriggered.MDC2020an_v06_01_01_best_v1_3.list");
     if (input_filelist.is_open())
     {
       string filename;
@@ -131,12 +129,13 @@ void TrkAnaTutorialPlotTrkMomentum()
     c1->SetGridx(true);
     c1->SetGridy(true);
 
+    //branch 100 has trkmcsim --> need to determine where the start momentum and momentum are labeled. Says it takes info from SimInfo--> check code maybe
     TH1D* hist = new TH1D("hist","",100,100,110);
-    trkana->Draw("demfit.mom.R()>>hist","","HIST"); //utilizing the R() functions. plots magnitude of momentum vector and cut out the products until 700ns zone (eventually)
+    trkana->Draw("trkmcsim.mom.R()>>hist","","HIST"); //utilizing the R() functions. plots magnitude of momentum vector for detected electrons //
 
-    TH1D* hist2 = new TH1D("hist2","",100,100,110);
-    trkana->Draw("demmcsim.omom.R()>>hist2", "", "HIST SAME"); //again utilizing R() function. now plotting the thrown
-    hist2->SetLineColor(kRed);
+    //TH1D* hist2 = new TH1D("hist2","",100,100,110);
+    //trkana->Draw("trkmcsim.mom.R()>>hist2", "", "HIST SAME"); //again utilizing R() function. now plotting the thrown
+    //hist2->SetLineColor(kRed);
 
     //TH1D* hist3= new TH1D("hist3","",100,100,110);
     //float comparison = demfit.mom.R()/demmcsim.omom.R();
@@ -144,9 +143,9 @@ void TrkAnaTutorialPlotTrkMomentum()
     //hist3->SetLineColor(kGreen);
 
     TLegend* leg = new TLegend();
-   leg->AddEntry(hist, "e- momentum  magnitude (MeV/c)", "l");
-   leg->AddEntry(hist2, "e- momentum magnitude at entrance (MeV/c)", "l");
-   //leg->AddEntry(hist3, "e- momentum magnitude at entrance (MeV/c) with t>700 (ns)","l"); //selects specifically the data from the entrance and cuts electron momenta that appear before the selection region at 700ns
+   leg->AddEntry(hist, "measured e- momentum  magnitude (MeV/c)", "l");
+   //leg->AddEntry(hist2, "origin e- momentum magnitude (MeV/c)", "l");
+   //leg->AddEntry(hist3, "measured e- momentum / origin e- momentum","l"); //selects specifically the data from the entrance and cuts electron momenta that appear before the selection region at 700ns
    leg->Draw();
 
     c1->Update();
@@ -155,7 +154,8 @@ void TrkAnaTutorialPlotTrkMomentum()
 
     delete c1;
     delete hist;
-    delete hist2;
+    //delete hist2;
     //delete hist3;
   }
 }
+
