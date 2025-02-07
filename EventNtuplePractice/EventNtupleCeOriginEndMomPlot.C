@@ -74,7 +74,7 @@ void EventNtupleCeOriginEndMomPlot()
     c1->SetGridx(true);
     c1->SetGridy(true);
 
-    TH1D* hist = new TH1D("hist","",200,0,200);
+    TH1D* hist = new TH1D("hist","",170,30,200);
     ntuple->Draw("trkmcsim.endmom.R()>>hist","","HIST"); //utilizing the R() functions. Unsure wha this is, but will come back with more information; plot the magnitude of the momentum vector
 
     TLegend* leg = new TLegend();
